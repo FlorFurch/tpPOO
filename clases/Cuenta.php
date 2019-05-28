@@ -8,7 +8,7 @@
 
 namespace app\clases;
 
-include ("persona.php");
+include ("Persona.php");
 
 /* creo una nueva cuenta
  * 

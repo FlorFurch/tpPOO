@@ -56,18 +56,25 @@
 
  
         <?php
-                if (!empty($_GET['dni']) && !empty($_GET['apellido']) && !empty($_GET['nombre']) && !empty($_GET['numero_cliente'])) {
+                if (!empty($_GET['dni']) && !empty($_GET['apellido']) && !empty($_GET['nombre']) && !empty($_GET['numero_cliente']))
+                {
+                    $existeCliente = false;
                     foreach (\app\clases\Banco::$coleccionClientes as $cliente) {
-            if ($_GET['numero_cliente'] == $cliente['numero_cliente']) {
-                require_once 'clienteExistente.php';
-            } elseif ($_GET['numero_cliente'] != $cliente['numero_cliente']) {
-
-                require_once 'clienteCreado.php';
-            } 
-        }
-            $nuevoCliente = new \app\clases\Cliente($_GET['dni'], $_GET['apellido'], $_GET['nombre'], $_GET['numero_cliente']);
+                        if ($_GET['numero_cliente'] == $cliente['numero_cliente']) {
+                            $existeCliente = true;
+                            break;
+                        } 
+                    }
+                    
+                    if ($existeCliente) {
+                        require_once 'clienteExistente.php';
+                    } else {                            
+                        $nuevoCliente = new \app\clases\Cliente($_GET['dni'], $_GET['apellido'], $_GET['nombre'], $_GET['numero_cliente']);
+                        require_once 'clienteCreado.php';
+                    } 
+                    
             
-        }
+                }       
         
         
         require_once 'ListadoDeClientes.php';
