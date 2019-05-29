@@ -63,6 +63,16 @@ class Banco {
             $this->coleccionCtaCorriente[] = $cuenta;
         }
     }
+    
+    public function buscarClientePorNumero($numeroBuscado){
+        foreach(self::$coleccionClientes as $clienteActual){
+            if($clienteActual['numero_cliente']==$numeroBuscado){
+                $instanciaCliente = new Cliente($clienteActual['dni'], $clienteActual['apellido'], $clienteActual['nombre'], $clienteActual['numero_cliente']);
+                return $instanciaCliente;
+            }
+        }
+        return null;
+    }
 
     function incorporarCajaAhorro() {
         foreach ($this->coleccionCuentas as $cuenta) {

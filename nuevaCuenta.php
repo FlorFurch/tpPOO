@@ -3,6 +3,46 @@
     require_once 'header.php';
     require_once 'nav.php';
     require_once 'clases/Banco.php';
+    
+    use app\clases\CajaAhorro;
+    use app\clases\CtaCorriente;
+    use app\clases\Banco;
+    $mensaje = "";
+    if(isset($_GET['boton'])){
+        $banco = new Banco();
+        $clienteBuscado = $banco->buscarClientePorNumero($_GET['numero_cliente']);
+        if(!$clienteBuscado){
+            $mensaje = "No existe el cliente";
+        }else{
+            $mensaje = "Cliente encontrado: {$clienteBuscado->apellido}";
+            
+            switch ($_GET['tipo_de_cuenta']) {
+                case 'caja_ahorro':
+                        $nuevaCuenta = new CajaAhorro($_GET['cuenta'], $clienteBuscado, $_GET['saldo']);
+                        $mensaje = $mensaje . ' Caja ahorro creada';
+                    break;
+                case 'cuenta_corriente':
+                    $nuevaCuenta = new CtaCorriente($_GET['cuenta'], $clienteBuscado, $_GET['saldo'], 100);
+                    $mensaje = $mensaje . ' Cuenta corriente creada';
+                    break;
+
+                default:
+                    $nuevaCuenta = null;
+                    $mensaje = $mensaje . ' tipo de cuenta inexistente';
+                    break;
+            }
+            var_dump($nuevaCuenta);
+        }
+        // estoy agregando una cuenta
+        //$nuevaCuentaCorriente = new CtaCorriente($numCta, $duenio, $saldo, $giro);
+        //$nuevaCajaAhorro = new CajaAhorro($numCta, $duenio, $saldo);
+    }
+    
+    ?>
+    <?php
+        if($mensaje){
+            echo "<div class='row'><div class='col-md-12'>$mensaje</div></div>";
+        }
     ?>
     <div class="row" >
         <div class="col-md-12">
